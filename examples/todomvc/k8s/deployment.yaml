@@ -19,12 +19,7 @@ spec:
         - name: todomvc
           image: kakalik/todomvc-app:1.0
           ports:
-            - containerPort: 3000
-          envFrom:
-            - configMapRef:
-                name: todomvc-config
-            - secretRef:
-                name: todomvc-secret
+            - containerPort: 3000          
           resources:
             requests:
               cpu: "100m"
@@ -32,3 +27,18 @@ spec:
             limits:
               cpu: "500m"
               memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todomvc-service
+  namespace: todomvc-ns
+spec:
+  selector:
+    app: todomvc
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30002
+  type: ClusterIP
