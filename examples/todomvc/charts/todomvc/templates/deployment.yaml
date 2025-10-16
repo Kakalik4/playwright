@@ -1,44 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todomvc-deployment
-  namespace: todomvc-ns
-  labels:
-    app: todomvc
+  name: {{ include "todomvc.fullname" . }}
+  labels: {{- include "todomvc.labels" . | nindent 4 }}
 spec:
-  replicas: 2
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: todomvc
+      app: {{ include "todomvc.name" . }}
   template:
     metadata:
       labels:
-        app: todomvc
+        app: {{ include "todomvc.name" . }}
     spec:
       containers:
-        - name: todomvc
-          image: kakalik/todomvc-app:1.0
+        - name: {{ include "todomvc.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 3000          
+            - containerPort: 3000
+          env:
+            - name: APP_ENV
+              value: "{{ .Values.config.APP_ENV }}"
+            - name: WELCOME_MSG
+              value: "{{ .Values.config.WELCOME_MSG }}"
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
             limits:
-              cpu: "500m"
-              memory: "256Mi"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: todomvc-service
-  namespace: todomvc-ns
-spec:
-  selector:
-    app: todomvc
-  ports:
-    - protocol: TCP
-      port: 3000
-      targetPort: 3000
-      nodePort: 30002
-  type: ClusterIP
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
