@@ -1,6 +1,6 @@
 replicaCount: 2
 image:
-  repository: kakalik/todomvc-app:1.0
+  repository: kakalik/todomvc-app
   tag: "latest"
   pullPolicy: IfNotPresent
 service:

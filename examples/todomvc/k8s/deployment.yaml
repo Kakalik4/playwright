@@ -17,9 +17,9 @@ spec:
     spec:
       containers:
         - name: todomvc
-          image: kakalik/todomvc-app:1.0
+          image: kakalik/todomvc-app
           ports:
-            - containerPort: 3000          
+            - containerPort: 3000
           resources:
             requests:
               cpu: "100m"
