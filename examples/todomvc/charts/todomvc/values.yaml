@@ -1,0 +1,27 @@
+replicaCount: 2
+image:
+  repository: kakalik/todomvc-app:1.0
+  tag: "latest"
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 80
+ingress:
+  enabled: false
+  host: todomvc.local
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+config:
+  APP_ENV: dev
+  WELCOME_MSG: "Todomvc Playwright Demo"
+secrets:
+  DB_PASSWORD: "s3cr3t"
+  API_KEY: "REPLACE_WITH_REAL_KEY"
+persistence:
+  enabled: false
+  size: 1Gi

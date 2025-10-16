@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: todomvc-config
+  namespace: todomvc-ns
+data:
+  APP_ENV: "dev"
+  WELCOME_MSG: "Todomvc Playwright Demo"

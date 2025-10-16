@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todomvc-deployment
+  namespace: todomvc-ns
+  labels:
+    app: todomvc
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todomvc
+  template:
+    metadata:
+      labels:
+        app: todomvc
+    spec:
+      containers:
+        - name: todomvc
+          image: kakalik/todomvc-app:1.0
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: todomvc-config
+            - secretRef:
+                name: todomvc-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"

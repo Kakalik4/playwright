@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "todomvc.fullname" . }}
+  labels: {{- include "todomvc.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "todomvc.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "todomvc.name" . }}
+    spec:
+      containers:
+        - name: {{ include "todomvc.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: APP_ENV
+              value: "{{ .Values.config.APP_ENV }}"
+            - name: WELCOME_MSG
+              value: "{{ .Values.config.WELCOME_MSG }}"
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
